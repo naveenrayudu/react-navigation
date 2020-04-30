@@ -1,19 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import { enableScreens } from 'react-native-screens';
+import AppNavigator from './navigations/MealsNavigator';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  );
+const loadFonts = () => {
+  return Font.loadAsync({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
+  })
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+enableScreens();
+
+export default function App() {
+  const [isPreSettingApp, setIsPreSettingApp] = useState(true);
+
+  if(isPreSettingApp)
+    return <AppLoading startAsync={loadFonts} onFinish={() => setIsPreSettingApp(false)} />
+
+
+  return <AppNavigator />;
+}
